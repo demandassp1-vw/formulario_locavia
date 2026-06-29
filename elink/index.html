@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E Link · Encurtador</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <meta name="theme-color" content="#0d7c66" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <div class="page-wrapper">
+
+    <!-- CARD PRINCIPAL -->
+    <main class="card" id="mainCard">
+      <a href="../index.html" class="back-link">← Voltar aos Formulários</a>
+      <div class="card-header">
+        <div class="logo-icon">🔗</div>
+        <h1>E Link</h1>
+        <p class="subtitle">Cole o link e gere a versão curta com QR Code:</p>
+      </div>
+
+      <div class="form-area">
+        <input
+          type="url"
+          id="longUrl"
+          placeholder="https://..."
+          autocomplete="off"
+        />
+
+        <button id="shortenBtn" onclick="shortenUrl()">
+          <span id="btnText">GERAR LINK</span>
+          <svg id="btnSpinner" class="spinner hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="20" height="20">
+            <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+          </svg>
+        </button>
+
+        <button id="clearBtn" class="new-link-btn" onclick="clearInput()" type="button">
+          Limpar
+        </button>
+      </div>
+
+      <div id="errorBox" class="error-box hidden"></div>
+    </main>
+
+    <!-- CARD RESULTADO (aparece após encurtar) -->
+    <div class="card result-card hidden" id="resultCard">
+      <div class="result-header">
+        <div class="check-icon">✓</div>
+        <h2>Link gerado!</h2>
+      </div>
+
+      <div class="link-display">
+        <span id="shortLinkText" class="short-link-text"></span>
+        <button class="copy-btn" onclick="copyLink()" id="copyBtn" title="Copiar link">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- QR CODE -->
+      <div class="qr-section">
+        <p class="qr-label">QR Code do link</p>
+        <div class="qr-wrapper">
+          <div id="qrCanvas"></div>
+        </div>
+        <button class="download-qr-btn" onclick="downloadQR()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Baixar QR Code
+        </button>
+      </div>
+
+      <button class="new-link-btn" onclick="resetForm()">
+        Limpar e encurtar outro link
+      </button>
+    </div>
+
+  </div>
+
+  <!-- Biblioteca QR Code (gratuita, sem servidor) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
