@@ -94,6 +94,12 @@ h1 {
 
 .back-link:hover { color: var(--green); }
 
+.result-back-link {
+  display: flex;
+  justify-content: center;
+  margin: 14px 0 0;
+}
+
 /* === FORM === */
 .form-area {
   display: flex;
