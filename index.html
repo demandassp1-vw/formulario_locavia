@@ -324,12 +324,18 @@ function getFormData(){
 
 function openTermo(){
   const d = getFormData();
+  const enderecoTermo = [
+    [d.rua, d.num].filter(Boolean).join(', '),
+    d.bairro,
+    d.cidEmp,
+    d.uf
+  ].filter(Boolean).join(', ') || '(endereço completo)';
   document.getElementById('overlayTitle').textContent = '📄 Termo de Responsabilidade para Utilização do Locavia';
   document.getElementById('docContent').innerHTML = `
 <div class="doc-page">
   <h1 class="dt">TERMO DE RESPONSABILIDADE PARA UTILIZAÇÃO DO LOCAVIA</h1>
 
-  <p><span class="fv">${d.razao}</span>, neste ato representada na forma dos seus instrumentos constitutivos, doravante designada simplesmente por "Contratada".</p>
+  <p><span class="fv">${d.razao}</span>, inscrita no CNPJ sob o nº <span class="fv">${d.cnpj}</span>, com sede à <span class="fv">${enderecoTermo}</span>, neste ato representada na forma dos seus instrumentos constitutivos, doravante designada simplesmente por "Contratada".</p>
   <p>Pelo presente Termo de Responsabilidade, a Contratada reconhece e concorda com as condições estabelecidas para utilização do sistema denominado LOCAVIA, disponibilizado pela LM Serviços de Mobilidade.</p>
 
   <p class="sec">1. OBJETO</p>
