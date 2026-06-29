@@ -22,6 +22,9 @@
   .lm-info small{font-size:.62rem;color:rgba(255,255,255,.38);letter-spacing:1px;text-transform:uppercase;}
   .back-btn{display:flex;align-items:center;gap:6px;color:rgba(255,255,255,.55);font-size:.76rem;font-weight:500;text-decoration:none;transition:color .15s;}
   .back-btn:hover{color:var(--white);}
+  .header-actions{display:flex;align-items:center;gap:18px;}
+  .elink-btn{display:flex;align-items:center;gap:7px;background:rgba(26,0,255,.12);border:1.5px solid rgba(26,0,255,.35);color:var(--white);font-size:.78rem;font-weight:600;padding:7px 14px;border-radius:20px;text-decoration:none;transition:all .15s;}
+  .elink-btn:hover{background:var(--blue);border-color:var(--blue);box-shadow:0 2px 12px rgba(26,0,255,.35);}
 
   .wrapper{max-width:780px;margin:0 auto;padding:32px 20px 60px;}
 
@@ -117,7 +120,10 @@
     <div class="lm-box">LM</div>
     <div class="lm-info"><strong>LM Mobilidade</strong><small>Sistema Locavia</small></div>
   </div>
-  <a class="back-btn" href="index.html">← Voltar</a>
+  <div class="header-actions">
+    <a class="elink-btn" href="elink/index.html" title="Encurtador de Links">🔗 E Link</a>
+    <a class="back-btn" href="index.html">← Voltar</a>
+  </div>
 </header>
 
 <div class="wrapper">

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>E Link · Redirecionando...</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0a0a;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .wrap { display: flex; flex-direction: column; align-items: center; gap: 24px; padding: 2rem; }
+    .logo { font-size: 1.4rem; font-weight: 600; color: #0d7c66; letter-spacing: -0.02em; }
+    .ring {
+      width: 64px; height: 64px;
+      border: 3px solid rgba(13,124,102,0.15);
+      border-top-color: #0d7c66;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .ring-wrap { position: relative; width: 64px; height: 64px; }
+    .ring-icon {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 1.3rem;
+      animation: pulse 1.4s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.4; transform: translate(-50%, -50%) scale(0.9); }
+      50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.1); }
+    }
+    .msg { color: #666; font-size: 0.92rem; font-weight: 300; }
+    .btn {
+      margin-top: 4px; padding: 12px 28px;
+      background: #0d7c66; color: #fff;
+      border: none; border-radius: 8px;
+      font-family: inherit; font-size: 0.95rem; font-weight: 600;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn:hover { background: #0a6554; }
+  </style>
+</head>
+<body>
+
+  <div class="wrap" id="loading">
+    <div class="logo">🔗 E Link</div>
+    <div class="ring-wrap">
+      <div class="ring"></div>
+      <span class="ring-icon">🔗</span>
+    </div>
+    <p class="msg">Processando link...</p>
+  </div>
+
+  <div class="wrap" id="erro" style="display:none">
+    <div class="logo">🔗 E Link</div>
+    <p style="color:#ff6b6b; font-size:1.1rem; font-weight:600;">Link não encontrado</p>
+    <p style="color:#666; font-size:0.9rem;">Este link não existe ou foi removido.</p>
+    <a href="https://demandassp1-vw.github.io/formulario_locavia/elink/" class="btn">Criar um link</a>
+  </div>
+
+  <script>
+    const SUPA_URL = "https://ihtrqotxtjafsoeybxij.supabase.co";
+    const SUPA_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlodHJxb3R4dGphZnNvZXlieGlqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAzNjEyMDcsImV4cCI6MjA5NTkzNzIwN30.P2GZEydqQhZ1J9LsmrmlIEDl0AuCHh4bIuTG8ixOmlo";
+
+    async function redirect() {
+      const params = new URLSearchParams(window.location.search);
+      const slug = params.get('s');
+
+      if (!slug) { window.location.href = 'https://demandassp1-vw.github.io/formulario_locavia/elink/'; return; }
+
+      try {
+        const res = await fetch(
+          `${SUPA_URL}/rest/v1/links?slug=eq.${slug}&select=original_url,id`,
+          { headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}` } }
+        );
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          document.getElementById('loading').style.display = 'none';
+          document.getElementById('erro').style.display = 'flex';
+          return;
+        }
+
+        const { original_url, id } = data[0];
+
+        fetch(`${SUPA_URL}/rest/v1/rpc/increment_clicks`, {
+          method: 'POST',
+          headers: { apikey: SUPA_KEY, Authorization: `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ link_id: id })
+        }).catch(() => {});
+
+        setTimeout(() => { window.location.href = original_url; }, 900);
+
+      } catch (err) {
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('erro').style.display = 'flex';
+      }
+    }
+
+    redirect();
+  </script>
+</body>
+</html>
